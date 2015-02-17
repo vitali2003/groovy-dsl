@@ -7,4 +7,6 @@ repositories {
 
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.3.6'
+
+    compile 'commons-io:commons-io:2.4'
 }
