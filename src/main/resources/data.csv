@@ -1,0 +1,8 @@
+id,name,date,weekday
+1,monday,2015-02-16,false
+2,tuesday,2015-02-17,false
+3,wednesday,2015-02-18,false
+4,thursday,2015-02-19,false
+5,friday,2015-02-20,false
+6,saturday,2015-02-21,true
+7,sunday,2015-02-22,true
