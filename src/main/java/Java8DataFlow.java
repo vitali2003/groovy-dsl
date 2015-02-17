@@ -1,12 +1,5 @@
-import org.apache.commons.io.IOUtils;
-
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * @author yaroslav.yermilov
@@ -14,71 +7,12 @@ import java.util.function.Predicate;
 public class Java8DataFlow {
 
     public static void main(String[] args) {
-        List<Object[]> data = loadData("data.csv", true, new String[]{"int", "string", "date|yyyy-MM-dd", "boolean"});
+        List<Object[]> data = DataManger.loadData("data.csv", true, new String[]{"int", "string", "date|yyyy-MM-dd", "boolean"});
 
-        List<Object[]> daysToWork = filterData(data, row -> (((Date) row[2]).after(new Date()) && !((Boolean) row[3])));
+        List<Object[]> daysToWork = DataManger.filterData(data, row -> (((Date) row[2]).after(new Date()) && !((Boolean) row[3])));
 
-        List<Object[]> dayNamesToWork = selectColumns(daysToWork, new int[] { 1 });
+        List<Object[]> dayNamesToWork = DataManger.selectColumns(daysToWork, new int[]{1});
 
         dayNamesToWork.stream().map(dayName -> dayName[0]).forEach(System.out::println);
-    }
-
-    public static List<Object[]> loadData(String fileName, boolean header, String[] columnTypes) {
-        List<Object[]> rows = new ArrayList<Object[]>();
-
-        List<String> lines = null;
-        try {
-            lines = IOUtils.readLines(Java8DataFlow.class.getResourceAsStream("/" + fileName));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        for (int i = header ? 1 : 0; i < lines.size(); i++) {
-            String[] columns = lines.get(i).split(",");
-            Object[] values = new Object[columns.length];
-            for (int j = 0; j < columns.length; j++) {
-                if (columnTypes[j].equals("int")) {
-                    values[j] = Integer.parseInt(columns[j]);
-                }
-                if (columnTypes[j].equals("string")) {
-                    values[j] = columns[j];
-                }
-                if (columnTypes[j].startsWith("date|")) {
-                    try {
-                        values[j] = new SimpleDateFormat(columnTypes[j].substring(5)).parse(columns[j]);
-                    } catch (ParseException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                if (columnTypes[j].startsWith("boolean")) {
-                    values[j] = Boolean.parseBoolean(columns[j]);
-                }
-            }
-
-            rows.add(values);
-        }
-
-        return rows;
-    }
-
-    public static List<Object[]> filterData(List<Object[]> data, Predicate<Object[]> predicate) {
-        List<Object[]> result = new ArrayList<Object[]>();
-        for (Object[] row : data) {
-            if (predicate.test(row)) {
-                result.add(row);
-            }
-        }
-        return result;
-    }
-
-    public static List<Object[]> selectColumns(List<Object[]> data, int[] columns) {
-        List<Object[]> result = new ArrayList<Object[]>();
-        for (Object[] row : data) {
-            Object[] selectedColumns = new Object[columns.length];
-            for (int i = 0; i < columns.length; i++) {
-                selectedColumns[i] = row[columns[i]];
-            }
-            result.add(selectedColumns);
-        }
-        return result;
     }
 }
