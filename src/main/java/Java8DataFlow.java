@@ -9,7 +9,7 @@ public class Java8DataFlow {
     public static void main(String[] args) {
         List<Object[]> data = DataManger.loadData("data.csv", true, new String[]{"int", "string", "date|yyyy-MM-dd", "boolean"});
 
-        List<Object[]> daysToWork = DataManger.filterData(data, row -> (((Date) row[2]).after(new Date()) && !((Boolean) row[3])));
+        List<Object[]> daysToWork = DataManger.filterData(data, row -> (((Date) row[2]).after(DataManger.now()) && !((Boolean) row[3])));
 
         List<Object[]> dayNamesToWork = DataManger.selectColumns(daysToWork, new int[]{1});
 

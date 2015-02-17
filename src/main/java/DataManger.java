@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -69,5 +70,9 @@ public class DataManger {
             result.add(selectedColumns);
         }
         return result;
+    }
+
+    public static Date now() {
+        return new Date();
     }
 }

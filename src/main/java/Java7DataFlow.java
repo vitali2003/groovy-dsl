@@ -14,7 +14,7 @@ public class Java7DataFlow {
 
             @Override
             public boolean test(Object[] row) {
-                return (((Date) row[2]).after(new Date()) && !((Boolean) row[3]));
+                return (((Date) row[2]).after(DataManger.now()) && !((Boolean) row[3]));
             }
         });
 
