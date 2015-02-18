@@ -5,4 +5,4 @@ import ua.jug.dsl.groovy.DataManger
  */
 def data = DataManger.loadData('data.csv', true, [ 'int', 'string', 'date|yyyy-MM-dd', 'boolean' ])
 
-data.rows().findAll { it.column(2).after(DataManger.now()) && !(it.column(3)) }.collect { it.column(1) }.each { println it }
+data.rows().findAll { it.column('date').after(DataManger.now()) && !(it.column('weekday')) }.collect { it.column('name') }.each { println it }

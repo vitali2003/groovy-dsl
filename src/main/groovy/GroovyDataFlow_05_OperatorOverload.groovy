@@ -12,7 +12,7 @@ import ua.jug.dsl.groovy.DataManger
 
 def data = 'data.csv'.loadData withHeader: true, ofTypes: [ 'int', 'string', 'date|yyyy-MM-dd', 'boolean' ]
 
-(data | { it[2].after(DataManger.now()) && !(it[3]) }).collect { it[1] }.each { println it }
+(data | { it['date'] > DataManger.now() && !it['weekday'] }).collect { it['name'] }.each { println it }
 '''
 )
 
@@ -26,8 +26,8 @@ static Binding binding() {
         delegate.rows().findAll(condition)
     }
 
-    Row.metaClass.getAt = { index ->
-        delegate.column(index)
+    Row.metaClass.getAt = { String name ->
+        delegate.column(name)
     }
 
     new Binding()

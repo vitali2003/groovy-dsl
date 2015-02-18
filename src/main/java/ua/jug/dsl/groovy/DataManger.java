@@ -104,6 +104,10 @@ public class DataManger {
             this.columnNames = new ArrayList<>(columnNames);
             this.columnTypes = new ArrayList<>(columnTypes);
             this.rows = new ArrayList<>(rows);
+
+            for (Row row : this.rows) {
+                row.setColumnNames(this.columnNames);
+            }
         }
 
         public List<Row> rows() {
@@ -121,10 +125,15 @@ public class DataManger {
 
     public static class Row {
 
+        private List<String> columnNames;
         Object[] values;
 
         public Row(Object[] values) {
             this.values = Arrays.copyOf(values, values.length);
+        }
+
+        public Object column(String name) {
+            return column(columnNames.indexOf(name));
         }
 
         public Object column(int index) {
@@ -137,6 +146,10 @@ public class DataManger {
 
         public Object value() {
             return column(0);
+        }
+
+        public void setColumnNames(List<String> columnNames) {
+            this.columnNames = columnNames;
         }
     }
 }
