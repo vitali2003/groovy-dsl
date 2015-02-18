@@ -7,7 +7,7 @@ import ua.jug.dsl.groovy.DataManger.Row
  */
 
 new GroovyShell(binding()).evaluate(
-        '''
+'''
 def data = 'data.csv'.loadData withHeader: true, ofTypes: [ 'int', 'string', 'date|yyyy-MM-dd', 'boolean' ]
 
 (data | { it['date'] > fromNow(1.day) && !it['weekday'] }).collectNameAndId().each { println it }
