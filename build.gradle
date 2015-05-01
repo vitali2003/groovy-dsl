@@ -2,11 +2,13 @@ apply plugin: 'java'
 apply plugin: 'groovy'
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.3.6'
 
     compile 'commons-io:commons-io:2.4'
+
+    compile 'org.springframework:spring-web:4.1.5.RELEASE'
 }
