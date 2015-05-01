@@ -2,7 +2,7 @@ import com.jeeconf.groovydsl.Monitoring
 
 String.metaClass.leftShift = { Map params ->
     long period = params.every
-    Monitoring.sendStatus(delegate, period)
+    Monitoring.sendStatusPeriodically(delegate, period)
 }
 
 new GroovyShell().evaluate(

@@ -18,7 +18,7 @@ binding.please = { Closure action ->
 }
 
 binding.send = { String phoneNumber, long period ->
-    Monitoring.sendStatus(phoneNumber, period)
+    Monitoring.sendStatusPeriodically(phoneNumber, period)
 }
 
 binding.me = '380934902436'

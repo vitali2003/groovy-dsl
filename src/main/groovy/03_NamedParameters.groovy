@@ -1,12 +1,12 @@
 import com.jeeconf.groovydsl.Monitoring
 
-String.metaClass.sendStatus = { Map params ->
+String.metaClass.sendStatusPeriodically = { Map params ->
     long period = params.every
-    Monitoring.sendStatus(delegate, period)
+    Monitoring.sendStatusPeriodically(delegate, period)
 }
 
 new GroovyShell().evaluate(
 '''
-'380934902436'.sendStatus every: 30000
+'380934902436'.sendStatusPeriodically every: 30000
 '''
 )

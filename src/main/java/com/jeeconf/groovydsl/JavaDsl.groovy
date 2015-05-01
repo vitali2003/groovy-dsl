@@ -6,6 +6,6 @@ package com.jeeconf.groovydsl
 class JavaDsl {
 
     public static void main(String[] args) {
-        Monitoring.sendStatus("380934902436", 30000);
+        Monitoring.sendStatusPeriodically("380934902436", 30000);
     }
 }

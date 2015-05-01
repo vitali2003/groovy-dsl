@@ -8,7 +8,7 @@ String.metaClass.methodMissing = { String name, args ->
         long numPeriod = Integer.parseInt(period.substring(0, numberIndex))
         String strPeriod = period.substring(numberIndex, period.length())
         if (strPeriod.toLowerCase() == 'seconds') {
-            Monitoring.sendStatus(delegate, numPeriod * 1000)
+            Monitoring.sendStatusPeriodically(delegate, numPeriod * 1000)
         }
     }
 }
