@@ -18,7 +18,7 @@ public class Monitoring {
     }
 
     void sendStatus(String phoneNumber, long period) {
-        while (true) {
+        while (forever()) {
             try {
                 sendMessage(phoneNumber, "So Far, So Good... (at " + now() + ")");
                 sleep(period);
@@ -26,6 +26,10 @@ public class Monitoring {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    boolean forever() {
+        return true;
     }
 
     void sendMessage(String phoneNumber, String message) throws IOException {
