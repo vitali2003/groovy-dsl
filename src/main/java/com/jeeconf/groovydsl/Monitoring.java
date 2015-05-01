@@ -28,19 +28,21 @@ public class Monitoring {
         }
     }
 
-    boolean forever() {
-        return true;
-    }
-
     void sendMessage(String phoneNumber, String message) throws IOException {
-        String apiKey = IOUtils.toString(NotADsl.class.getResourceAsStream("/api.key"));
-
         Map<String, String> parameters = new HashMap<>();
-        parameters.put("apiId", apiKey);
+        parameters.put("apiId", apiKey());
         parameters.put("phoneNumber", phoneNumber);
         parameters.put("text", message);
 
         post("http://sms.ru/sms/send?api_id={apiId}&to={phoneNumber}&text={text}", parameters);
+    }
+
+    String apiKey() throws IOException {
+        return IOUtils.toString(NotADsl.class.getResourceAsStream("/api.key"));
+    }
+
+    boolean forever() {
+        return true;
     }
 
     void sleep(long period) throws InterruptedException {
