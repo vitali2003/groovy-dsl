@@ -9,7 +9,7 @@ Integer.metaClass.propertyMissing = {String name ->
 def binding = new Binding()
 
 binding.please = { Closure action ->
-    [ sms: { Map params ->
+    [ status: { Map params ->
         String phoneNumber = params.to
         [ every: { long period ->
             action.call(phoneNumber, period)
@@ -25,6 +25,6 @@ binding.me = '380934902436'
 
 new GroovyShell(binding).evaluate(
 '''
-please send sms to:me every 30.seconds
+please send status to:me every 30.seconds
 '''
 )
