@@ -2,6 +2,6 @@ new GroovyShell().evaluate(
 '''
 import com.jeeconf.groovydsl.Monitoring
 
-Monitoring.sendStatusPeriodicallyPeriodically('380934902436', 30000)
+Monitoring.sendStatusPeriodically('380934902436', 30000)
 '''
 )
