@@ -14,11 +14,15 @@ import java.util.Map;
 public class Monitoring {
 
     public static void sendStatusPeriodically(String phoneNumber, long period) {
-        new Monitoring().sendStatus(phoneNumber, period);
+        sendStatusPeriodically(phoneNumber, period, Integer.MAX_VALUE);
     }
 
-    void sendStatus(String phoneNumber, long period) {
-        while (forever()) {
+    public static void sendStatusPeriodically(String phoneNumber, long period, int times) {
+        new Monitoring().sendStatus(phoneNumber, period, times);
+    }
+
+    void sendStatus(String phoneNumber, long period, int times) {
+        for (int i = 0; i < times; i++) {
             try {
                 sendMessage(phoneNumber, "So Far, So Good... (at " + now() + ")");
                 sleep(period);
@@ -39,10 +43,6 @@ public class Monitoring {
 
     String apiKey() throws IOException {
         return IOUtils.toString(NotADsl.class.getResourceAsStream("/api.key"));
-    }
-
-    boolean forever() {
-        return true;
     }
 
     void sleep(long period) throws InterruptedException {

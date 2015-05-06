@@ -15,13 +15,11 @@ class MonitoringSpec extends Specification {
             long period = 1234
 
         when:
-            3 * monitoring.forever() >>> [ true, true, false ]
-
             2 * monitoring.sleep(period) >> { /* do nothing */ }
 
             2 * monitoring.now() >>> [ 'now-1', 'now-2' ]
 
-            monitoring.sendStatus(phoneNumber, period)
+            monitoring.sendStatus(phoneNumber, period, 2)
 
         then:
             1 * monitoring.sendMessage(phoneNumber, 'So Far, So Good... (at now-1)')
