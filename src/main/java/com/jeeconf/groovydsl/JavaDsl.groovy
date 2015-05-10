@@ -1,8 +1,7 @@
 package com.jeeconf.groovydsl
 
-/**
- * @author yaroslav.yermilov
- */
+import com.jeeconf.groovydsl.Monitoring;
+
 class JavaDsl {
 
     public static void main(String[] args) {
