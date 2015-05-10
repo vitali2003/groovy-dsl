@@ -9,6 +9,9 @@ import java.util.Map;
 
 public class NotADsl {
 
+    private final static RestTemplate REST_TEMPLATE = new RestTemplate();
+    private final static String URL = "http://sms.ru/sms/send?api_id={apiId}&to={phoneNumber}&text={text}";
+
     public static void main(String[] args) {
         String phoneNumber = "380934902436";
         long period = 30000;
@@ -22,7 +25,7 @@ public class NotADsl {
                 parameters.put("phoneNumber", phoneNumber);
                 parameters.put("text", "So Far, So Good... (at " + LocalDateTime.now() + ")");
 
-                new RestTemplate().postForLocation("http://sms.ru/sms/send?api_id={apiId}&to={phoneNumber}&text={text}", null, parameters);
+                REST_TEMPLATE.postForLocation(URL, null, parameters);
                 Thread.sleep(period);
             }
         } catch (Exception e) {
