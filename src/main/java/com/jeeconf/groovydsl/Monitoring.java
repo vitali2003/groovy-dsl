@@ -54,6 +54,6 @@ public class Monitoring {
     }
 
     void post(String url, Map<String, String> parameters) {
-        new RestTemplate().postForLocation("http://sms.ru/sms/send?api_id={apiId}&to={phoneNumber}&text={text}", null, parameters);
+        new RestTemplate().postForLocation(url, null, parameters);
     }
 }

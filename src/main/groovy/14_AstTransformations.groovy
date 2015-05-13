@@ -21,36 +21,49 @@ Integer.metaClass.propertyMissing = {String name ->
     }
 }
 
-CompilerConfiguration compilerConfiguration = new CompilerConfiguration()
 
-def importCustomizer = new ImportCustomizer()
-importCustomizer.addImports(Monitoring.name)
-compilerConfiguration.addCompilationCustomizers(importCustomizer)
-
-compilerConfiguration.addCompilationCustomizers(new ASTTransformationCustomizer(new MonitoringASTTransformation()))
-
-new GroovyShell(compilerConfiguration).evaluate(
+new GroovyShell(compilerConfiguration()).evaluate(
 '''
 each 7 seconds - '380934902436'
 each 5 seconds - '380934902436'
 '''
 )
 
+
+static def compilerConfiguration() {
+    CompilerConfiguration compilerConfiguration = new CompilerConfiguration()
+    compilerConfiguration.addCompilationCustomizers(importCustomizer())
+    compilerConfiguration.addCompilationCustomizers(astTransformationCustomizer())
+    return compilerConfiguration
+}
+
+static def importCustomizer() {
+    def importCustomizer = new ImportCustomizer()
+    importCustomizer.addImports(Monitoring.name)
+    return importCustomizer
+}
+
+static def astTransformationCustomizer() {
+    new ASTTransformationCustomizer(new MonitoringASTTransformation())
+}
+
 @GroovyASTTransformation(phase=CompilePhase.CONVERSION)
 public class MonitoringASTTransformation implements ASTTransformation {
 
     public void visit(ASTNode[] astNodes, SourceUnit sourceUnit) {
-        def statusStatements = sourceUnit.getAST()?.getStatementBlock()?.statements
-            .findAll { it instanceof ExpressionStatement && it.expression instanceof MethodCallExpression }
-            .findAll { it.expression.objectExpression.method instanceof ConstantExpression && it.expression.objectExpression.method.value == 'each' }
-
-        statusStatements.each { ExpressionStatement statement ->
-            def params = extractParameters(statement)
-            statement.expression = createExpression(params)
+        scheduleRelatedStatements(sourceUnit).each { ExpressionStatement statement ->
+            def params = extractScheduleParameters(statement)
+            statement.expression = createRunMonitoringExpression(params)
         }
     }
 
-    private Map extractParameters(ExpressionStatement statement) {
+    private def scheduleRelatedStatements(SourceUnit sourceUnit) {
+        sourceUnit.getAST()?.getStatementBlock()?.statements
+                    .findAll { it instanceof ExpressionStatement && it.expression instanceof MethodCallExpression }
+                    .findAll { it.expression.objectExpression.method instanceof ConstantExpression && it.expression.objectExpression.method.value == 'each' }
+    }
+
+    private Map extractScheduleParameters(ExpressionStatement statement) {
         int periodValue = statement.expression.objectExpression.arguments.expressions[0].value
         String periodExp = statement.expression.method.value
         String phoneNumber = statement.expression.arguments.expressions[0].expression.value
@@ -63,7 +76,7 @@ public class MonitoringASTTransformation implements ASTTransformation {
         [ phoneNumber: phoneNumber, period: period ]
     }
 
-    private def createExpression(Map params) {
+    private def createRunMonitoringExpression(Map params) {
         new AstBuilder().buildFromString("""
             new Thread({
                 Monitoring.sendStatusPeriodically('$params.phoneNumber', $params.period)

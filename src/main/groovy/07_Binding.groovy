@@ -6,16 +6,22 @@ String.metaClass.leftShift = { Map params ->
     Monitoring.sendStatusPeriodically(delegate, period, times)
 }
 
-def binding = new Binding()
 
-binding.me = '380934902436'
-
-binding.every = { long period ->
-    [ every : period ]
-}
-
-new GroovyShell(binding).evaluate(
+new GroovyShell(binding()).evaluate(
 '''
 me << every(30000)
 '''
 )
+
+
+static def binding() {
+    def binding = new Binding()
+
+    binding.me = '380934902436'
+
+    binding.every = { long period ->
+        [ every : period ]
+    }
+
+    return binding
+}

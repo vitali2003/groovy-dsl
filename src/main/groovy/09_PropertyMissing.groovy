@@ -11,16 +11,22 @@ Integer.metaClass.propertyMissing = {String name ->
     }
 }
 
-def binding = new Binding()
 
-binding.me = '380934902436'
-
-binding.every = { long period ->
-    [ every : period ]
-}
-
-new GroovyShell(binding).evaluate(
+new GroovyShell(binding()).evaluate(
 '''
 me << every(30.seconds)
 '''
 )
+
+
+static def binding() {
+    def binding = new Binding()
+
+    binding.me = '380934902436'
+
+    binding.every = { long period ->
+        [ every : period ]
+    }
+
+    return binding
+}

@@ -9,20 +9,8 @@ Integer.metaClass.propertyMissing = {String name ->
     }
 }
 
-def binding = new Binding()
 
-binding.me = '380934902436'
-
-binding.status = { Closure closure ->
-    def statusConfiguration = new StatusConfiguration()
-    def configure = closure.rehydrate(statusConfiguration, binding, this)
-    configure.resolveStrategy = Closure.DELEGATE_FIRST
-    configure()
-
-    Monitoring.sendStatusPeriodically(statusConfiguration.phoneNumber, statusConfiguration.period, statusConfiguration.count)
-}
-
-new GroovyShell(binding).evaluate(
+new GroovyShell(binding()).evaluate(
 '''
 status {
     to me
@@ -32,6 +20,23 @@ status {
 '''
 )
 
+
+static def binding() {
+    def binding = new Binding()
+
+    binding.me = '380934902436'
+
+    binding.status = { Closure closure ->
+        def statusConfiguration = new StatusConfiguration()
+        def configure = closure.rehydrate(statusConfiguration, binding, this)
+        configure.resolveStrategy = Closure.DELEGATE_FIRST
+        configure()
+
+        Monitoring.sendStatusPeriodically(statusConfiguration.phoneNumber, statusConfiguration.period, statusConfiguration.count)
+    }
+
+    return binding
+}
 
 class StatusConfiguration {
 
