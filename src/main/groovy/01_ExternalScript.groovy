@@ -1,7 +1,2 @@
-new GroovyShell().evaluate(
-'''
-import com.jeeconf.groovydsl.Monitoring
-
-Monitoring.sendStatusPeriodically('380934902436', 30000)
-'''
-)
+String script = new File("../dsl/${this.class.name}.dsl").text
+new GroovyShell().evaluate(script)

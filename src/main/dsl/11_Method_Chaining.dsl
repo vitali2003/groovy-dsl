@@ -1,0 +1,1 @@
+please send status to:me every 30.seconds

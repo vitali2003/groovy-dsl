@@ -1,0 +1,1 @@
+Monitoring.sendStatusPeriodically('380934902436', 30000)

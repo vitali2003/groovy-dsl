@@ -7,18 +7,6 @@ String.metaClass.leftShift = { Map params ->
 }
 
 
-def binding = binding()
-new GroovyShell(binding).evaluate(
-'''
-import java.util.concurrent.TimeUnit
-
-period = TimeUnit.SECONDS.toMillis(10)
-me << schedule(period, 1)
-'''
-)
-println binding.period
-
-
 static def binding() {
     def binding = new Binding()
 
@@ -30,4 +18,12 @@ static def binding() {
 
     return binding
 }
+
+
+def binding = binding()
+
+String script = new File("../dsl/${this.class.name}.dsl").text
+new GroovyShell(binding).evaluate(script)
+
+println binding.period
 

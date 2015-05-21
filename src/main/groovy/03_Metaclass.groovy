@@ -5,8 +5,5 @@ String.metaClass.sendStatusPeriodically = { long period ->
 }
 
 
-new GroovyShell().evaluate(
-'''
-'380934902436'.sendStatusPeriodically 30000
-'''
-)
+String script = new File("../dsl/${this.class.name}.dsl").text
+new GroovyShell().evaluate(script)

@@ -7,13 +7,6 @@ Integer.metaClass.propertyMissing = {String name ->
 }
 
 
-new GroovyShell(binding()).evaluate(
-'''
-please send status to:me every 30.seconds
-'''
-)
-
-
 static def binding() {
     def binding = new Binding()
 
@@ -34,3 +27,7 @@ static def binding() {
 
     return binding
 }
+
+
+String script = new File("../dsl/${this.class.name}.dsl").text
+new GroovyShell(binding()).evaluate(script)

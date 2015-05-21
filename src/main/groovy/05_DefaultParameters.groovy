@@ -7,8 +7,5 @@ String.metaClass.sendStatusPeriodically = { Map params ->
 }
 
 
-new GroovyShell().evaluate(
-'''
-'380934902436'.sendStatusPeriodically every: 1000
-'''
-)
+String script = new File("../dsl/${this.class.name}.dsl").text
+new GroovyShell().evaluate(script)

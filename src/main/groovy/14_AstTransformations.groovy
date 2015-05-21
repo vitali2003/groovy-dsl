@@ -22,14 +22,6 @@ Integer.metaClass.propertyMissing = {String name ->
 }
 
 
-new GroovyShell(compilerConfiguration()).evaluate(
-'''
-each 7 seconds - '380934902436'
-each 5 seconds - '380934902436'
-'''
-)
-
-
 static def compilerConfiguration() {
     CompilerConfiguration compilerConfiguration = new CompilerConfiguration()
     compilerConfiguration.addCompilationCustomizers(importCustomizer())
@@ -84,3 +76,7 @@ public class MonitoringASTTransformation implements ASTTransformation {
         """).statements[0].expression[0]
     }
 }
+
+
+String script = new File("../dsl/${this.class.name}.dsl").text
+new GroovyShell(compilerConfiguration()).evaluate(script)

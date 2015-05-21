@@ -2,13 +2,6 @@ import com.jeeconf.groovydsl.Monitoring
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ImportCustomizer
 
-new GroovyShell(compilerConfiguration()).evaluate(
-'''
-Monitoring.sendStatusPeriodically('380934902436', 30000)
-'''
-)
-
-
 static def compilerConfiguration() {
     def compilerConfiguration = new CompilerConfiguration()
     compilerConfiguration.addCompilationCustomizers(importCustomizer())
@@ -20,3 +13,7 @@ static def importCustomizer() {
     importCustomizer.addImports(Monitoring.name)
     return importCustomizer
 }
+
+
+String script = new File("../dsl/${this.class.name}.dsl").text
+new GroovyShell(compilerConfiguration()).evaluate(script)

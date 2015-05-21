@@ -7,13 +7,6 @@ String.metaClass.leftShift = { Map params ->
 }
 
 
-new GroovyShell(binding()).evaluate(
-'''
-me << every(30000)
-'''
-)
-
-
 static def binding() {
     def binding = new Binding()
 
@@ -25,3 +18,7 @@ static def binding() {
 
     return binding
 }
+
+
+String script = new File("../dsl/${this.class.name}.dsl").text
+new GroovyShell(binding()).evaluate(script)

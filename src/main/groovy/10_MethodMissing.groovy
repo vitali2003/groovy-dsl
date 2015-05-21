@@ -6,22 +6,6 @@ String.metaClass.methodMissing = { String name, args ->
     }
 }
 
-
-new GroovyShell(binding()).evaluate(
-'''
-me.notifyEvery30Seconds()
-'''
-)
-
-
-static def binding() {
-    def binding = new Binding()
-
-    binding.me = '380934902436'
-
-    return binding
-}
-
 static long extractPeriodFromMethodName(String name) {
     String period = name.substring('notifyEvery'.length(), name.length())
 
@@ -36,3 +20,16 @@ static long extractPeriodFromMethodName(String name) {
 
     return numPeriod
 }
+
+
+static def binding() {
+    def binding = new Binding()
+
+    binding.me = '380934902436'
+
+    return binding
+}
+
+
+String script = new File("../dsl/${this.class.name}.dsl").text
+new GroovyShell(binding()).evaluate(script)

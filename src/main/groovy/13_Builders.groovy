@@ -10,16 +10,6 @@ Integer.metaClass.propertyMissing = {String name ->
 }
 
 
-new GroovyShell(binding()).evaluate(
-'''
-send status.withSchedule(to: me) {
-    schedule(period: 5.seconds, exactly: 2.times)
-    schedule(period: 30.seconds, exactly: 5.times)
-}
-'''
-)
-
-
 static def binding() {
     def binding = new Binding()
 
@@ -83,3 +73,7 @@ class SendStatusWithScheduleParametersBuilder extends FactoryBuilderSupport {
         registerFactory('schedule', new ScheduleFactory())
     }
 }
+
+
+String script = new File("../dsl/${this.class.name}.dsl").text
+new GroovyShell(binding()).evaluate(script)
